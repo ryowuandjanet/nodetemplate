@@ -3,13 +3,32 @@ const path=require("path");
 const logger=require("morgan");
 const cookieParser=require("cookie-parser");
 const createError=require("http-errors");
+const bodyParser=require('body-parser');
+const mongoose=require('mongoose');
+require('dotenv').config();
 
 const app=express();
 const port=3000;
 const indexRouter=require('./routes/index');
 
+const usersRouter=require('./routes/users');
+
+const url='mongodb://localhost:27017/webapp';
+mongoose.set('useFindAndModify',false);
+
+mongoose.connect(url,{
+	useNewUrlParser: true, 
+	useUnifiedTopology:true	
+}, () =>{
+	console.log(`connected...`);
+});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/',indexRouter);
+app.use(usersRouter);
 
 app.use(logger('dev'));
 app.use(express.json());
