@@ -13,7 +13,7 @@ const indexRouter=require('./routes/index');
 
 const usersRouter=require('./routes/users');
 
-const url='mongodb://localhost:27017/webapp';
+const url=process.env.MONGODB_URI || 'mongodb://localhost:27017/webapp';
 mongoose.set('useFindAndModify',false);
 
 mongoose.connect(url,{
